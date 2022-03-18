@@ -1,0 +1,7 @@
+App\Entity\Product:
+  booster_mtg:
+    name: 'Booster Magic'
+    sellPrice: 5.0
+  7_wonders:
+    name: '7 Wonders'
+    sellPrice: 40.0

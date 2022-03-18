@@ -1,0 +1,7 @@
+App\Entity\DepositEntry:
+  deposit_entry_boosters:
+    deposit: '@deposit_boosters'
+    product: '@booster_mtg'
+    quantity: 5
+    soldQuantity: 0
+    reimbursementPercentage: 50

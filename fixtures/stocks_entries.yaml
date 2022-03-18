@@ -1,0 +1,25 @@
+App\Entity\StockEntry:
+  stock_entry_old_7_wonders:
+    stock: '@old_stock_7_wonders'
+    product: '@7_wonders'
+    quantity: 10
+    soldQuantity: 9
+    buyPrice: 30.0
+  stock_entry_7_wonders:
+    stock: '@stock_7_wonders'
+    product: '@7_wonders'
+    quantity: 10
+    soldQuantity: 0
+    buyPrice: 25.0
+  stock_entry_future_7_wonders:
+    stock: '@future_stock_7_wonders'
+    product: '@7_wonders'
+    quantity: 10
+    soldQuantity: 0
+    buyPrice: 20.0
+  stock_entry_boosters:
+    stock: '@stock_boosters'
+    product: '@booster_mtg'
+    quantity: 50
+    soldQuantity: 0
+    buyPrice: 3.0

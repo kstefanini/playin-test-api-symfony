@@ -1,0 +1,16 @@
+App\Entity\OrderEntry:
+  order_entry_7_wonders:
+    order: '@order_7_wonders'
+    product: '@7_wonders'
+    quantity: 2
+    sellPrice: 38.0
+  order_entry_boosters_1:
+    order: '@order_mtg_1'
+    product: '@booster_mtg'
+    quantity: 2
+    sellPrice: 5.0
+  order_entry_boosters_2:
+    order: '@order_mtg_2'
+    product: '@booster_mtg'
+    quantity: 5
+    sellPrice: 5.0

@@ -1,0 +1,8 @@
+App\Entity\Stock:
+  old_stock_7_wonders:
+    validated: true
+  stock_7_wonders:
+    validated: true
+  future_stock_7_wonders: ~
+  stock_boosters:
+    validated: true

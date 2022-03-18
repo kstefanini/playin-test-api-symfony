@@ -1,0 +1,3 @@
+App\Entity\Deposit:
+  deposit_boosters:
+    validated: true
