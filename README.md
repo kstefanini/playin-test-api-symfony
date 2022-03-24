@@ -1,39 +1,72 @@
-# Symfony Docker
+# Test de recrutement Playin
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
+## Installation du test
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+```shell
+# Installation des dépendances
+composer install
 
-## Getting Started
+# Si vous souhaitez utilisez le conteneur Docker, lancez ce groupe de commandes
+docker-compose build --pull --no-cache
+docker-compose up -d
+docker-compose exec php php-fpm -D
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
-2. Run `docker-compose build --pull --no-cache` to build fresh images
-3. Run `docker-compose up` (the logs will be displayed in the current shell)
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker-compose down --remove-orphans` to stop the Docker containers.
+# Si vous recevez ce message :
+# the input device is not a TTY.  If you are using mintty, try prefixing the command with 'winpty'
+# winpty docker-compose exec php php-fpm -D
 
-## Features
+# Préparation de la base de données
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+php bin/console hautelook:fixtures:load
+```
 
-* Production, development and CI ready
-* Automatic HTTPS (in dev and in prod!)
-* HTTP/2, HTTP/3 and [Preload](https://symfony.com/doc/current/web_link.html) support
-* Built-in [Mercure](https://symfony.com/doc/current/mercure.html) hub
-* [Vulcain](https://vulcain.rocks) support
-* Just 2 services (PHP FPM and Caddy server)
-* Super-readable configuration
 
-**Enjoy!**
+### Lancement des tests
 
-## Docs
+```shell
+php bin/console doctrine:database:create --env=test
+php bin/console doctrine:migrations:migrate --env=test
+php bin/console hautelook:fixtures:load --env=test
+php vendor/bin/simple-phpunit
+```
 
-1. [Build options](docs/build.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Installing Xdebug](docs/xdebug.md)
-6. [Using a Makefile](docs/makefile.md)
-7. [Troubleshooting](docs/troubleshooting.md)
+## Consignes
 
-## Credits
+Lors de la validation d'une commande (`Order::setValidated(true)`), les quantités
+vendues dans les stocks et les dépôts doivent être mises à jour. Les stocks et
+les dépôts se vident dans l'ordre FIFO (le premier stock crée est le premier vidé).
 
-Created by [Kévin Dunglas](https://dunglas.fr), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+Pour cet exercice, on considère que les dépôts sont toujours vidés avant les stocks.
+
+Lors de la validation d'une commande, une association doit également être créée pour
+relier la commande au stock ou au dépôt qui lui correspond.
+
+L'objet qui représente l'association doit comporter une propriété calculée,
+la marge réalisée lors de la vente. Dans le cas d'un dépôt, cette marge est calculée
+avec le prix de vente et le pourcentage reversé au dépositaire. Dans le cas d'un stock,
+elle est calculée en fonction du prix de vente et du prix d'achat (les questions
+relatives à la TVA sont ignorées dans le cadre de ce test.)
+
+## Objectifs
+
+L'entité `Association` a été créée, mais elle est vide. Vous devez la remplir, en
+vous aidant des champs de la table `t_assoc` en base de données et exposer les
+points d'entrée d'API relatifs à cette entité.
+
+---
+
+**Mise en garde** : Consultez bien la migration, en fonction du champ `t_assoc.vendeur`,
+le champ `t_assoc.id_detail_stock` ne fait pas toujours référence à la même table !
+Consultez les commentaires de la migration, et résolvez le problème de la manière qui
+vous semble la plus judicieuse.
+
+---
+
+Vous devez modifier le comportement de `Order::setValidated()` afin que les quantités
+et les quantités vendues soient bien mises à jour et que l'association soit bien créée.
+(Pour ce faire, vous pouvez modifier `Order::setValidated()` directement ou utiliser
+une autre méthode qui vous semble plus judicieuse.)
+
+Vous pouvez créer de nouveaux tests unitaires ou fonctionnels pour vérifier ce que vous
+avez codé, ce serait appréciable, mais ce n'est pas obligatoire. 
