@@ -3,12 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\ValidateOrder;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: 't_panier')]
-#[ApiResource]
+#[ApiResource(itemOperations: [
+    'get',
+    'put' => [
+        'controller' => ValidateOrder::class,
+    ],
+    'patch' => [
+        'controller' => ValidateOrder::class,
+    ],
+])]
 class Order
 {
     #[ORM\Id]
